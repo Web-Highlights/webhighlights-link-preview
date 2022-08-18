@@ -33,7 +33,7 @@ module.exports = {
     port: 8080,
   },
   output: {
-    path: path.resolve(__dirname),
+    path: path.resolve(__dirname, "dist"),
     filename: "main.js",
   },
   resolve: {

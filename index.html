@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <script src="main.js" type="module"></script>
+  <script src="./dist/main.js" type="module"></script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
@@ -20,6 +20,18 @@
       flex-wrap: wrap;
     }
 
+    @media (min-width: 600px) {
+      body {
+        padding: 0 100px;
+      }
+    }
+
+    @media (min-width: 991px) {
+      .link-preview-image {
+        flex: 0 0 180px;
+      }
+    }
+
     webhighlights-link-preview {
       display: flex;
       max-width: 500px;
@@ -29,7 +41,7 @@
 
     @media (min-width: 600px) {
       webhighlights-link-preview {
-        margin: 10px;
+        margin: 10px 100px;
         border-radius: 10px;
       }
     }
@@ -47,6 +59,14 @@
   <webhighlights-link-preview
     url="https://medium.com/@mariusbongarts/my-journey-to-the-first-9-99-with-my-side-project-3edc13dd1f2d">
   </webhighlights-link-preview>
+  <webhighlights-link-preview
+    url="https://javascript.plainenglish.io/will-web-components-replace-frontend-frameworks-535891d779ba">
+  </webhighlights-link-preview>
+  <webhighlights-link-preview url="https://levelup.gitconnected.com/are-web-components-dead-12e404e0f4b0">
+  </webhighlights-link-preview>
+  <script>
+    document.querySelectorAll('webhighlights-link-preview').forEach(element => element.addEventListener('click', () => location.href = element.getAttribute('url')))
+  </script>
 </body>
 
 </html>

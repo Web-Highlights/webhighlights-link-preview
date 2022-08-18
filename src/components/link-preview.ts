@@ -1,6 +1,7 @@
+import { env } from "./../env";
 import { html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import type { LinkMetaData } from "../../netlify/functions/meta";
+import type { OpenGraphMetaData } from "../../netlify/functions/meta";
 import { truncateString } from "../shared/helper";
 
 import ComponentStyles from "./link-preview.scss";
@@ -9,24 +10,24 @@ export interface LinkPreviewProps {
   url: string;
   baseUrl: string;
   baseUrlFallback: string;
-  metaDataFallback: LinkMetaData;
+  metaDataFallback: OpenGraphMetaData;
 }
 
 @customElement("webhighlights-link-preview")
 class LinkPreview extends LitElement {
-  @property() api: string = "http://localhost:3000/meta";
   @property() url!: string;
-  @property() titleFallback!: string;
-  @property() descriptionFallback!: string;
-  @property() imageFallback!: string;
+  @property() apiUrl: string = env.api;
+  @property() titleFallback: string | undefined;
+  @property() descriptionFallback: string | undefined;
+  @property() imageFallback: string | undefined;
 
-  @property() metaData: LinkMetaData | undefined;
+  @property() metaData: OpenGraphMetaData | undefined;
 
   static get styles() {
     return [ComponentStyles];
   }
 
-  get metaFallback(): LinkMetaData {
+  get metaFallback(): OpenGraphMetaData {
     return {
       title: this.titleFallback,
       description: this.descriptionFallback,
@@ -34,7 +35,7 @@ class LinkPreview extends LitElement {
     };
   }
 
-  get meta(): LinkMetaData {
+  get meta(): OpenGraphMetaData {
     return {
       ...this.metaFallback,
       ...this.metaData,
@@ -46,12 +47,16 @@ class LinkPreview extends LitElement {
   }
 
   firstUpdated() {
+    this.fetchOpenGraphMetaData();
+  }
+
+  fetchOpenGraphMetaData() {
     const encodedUrl = encodeURIComponent(this.url);
-    fetch(`${this.api}/${encodedUrl}`)
+    const url = `${this.apiUrl}?url=${encodedUrl}`;
+    fetch(url)
       .then(async (data) => {
         try {
-          const metaData = await data.json();
-          this.metaData = metaData;
+          this.metaData = (await data.json()) as OpenGraphMetaData;
         } catch (error) {
           this.metaData = {};
         }
@@ -80,7 +85,6 @@ class LinkPreview extends LitElement {
 
   get imageSrc(): string {
     if (this.loading) return "";
-    console.log(this.meta);
     return (
       this.meta?.image?.url ??
       this.imageFallback ??

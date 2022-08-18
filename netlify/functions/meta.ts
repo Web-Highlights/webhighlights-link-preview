@@ -11,7 +11,6 @@ export interface OpenGraphMetaData {
   author?: string;
   favicon?: string;
 }
-export type LinkMetaData = OpenGraphMetaData;
 
 import { OpenGraphImage, SuccessResult } from "open-graph-scraper";
 
@@ -21,7 +20,7 @@ type OpenGraphSuccessResult = Partial<SuccessResult["result"]> & {
 
 export function mapOpenGraphResultToMetaData(
   result: OpenGraphSuccessResult
-): LinkMetaData {
+): OpenGraphMetaData {
   return {
     title: result.ogTitle,
     type: result.ogType,
@@ -33,7 +32,7 @@ export function mapOpenGraphResultToMetaData(
   };
 }
 
-function mapImage(result: OpenGraphSuccessResult): LinkMetaData["image"] {
+function mapImage(result: OpenGraphSuccessResult): OpenGraphMetaData["image"] {
   let image = result.ogImage;
   if (!image) return undefined;
 
@@ -68,11 +67,6 @@ const headers = {
   "Access-Control-Allow-Methods": "GET",
 };
 
-async function fetchJson<T>(url: string) {
-  const data = await fetch(url);
-  return data.json() as unknown as T;
-}
-
 export function validateParams({ url }: QueryParams) {
   if (!url) {
     throw new Error("url param is missing");
@@ -87,7 +81,7 @@ const handler: Handler = async (event, context) => {
   try {
     const params = event.queryStringParameters as unknown as QueryParams;
     validateParams(params);
-    const { error, result } = await ogs({ url: params.url });
+    const { error, result } = await ogs({ url: params.url, retry: 0 });
     if (error || !result?.success) {
       return {
         statusCode: 500,
@@ -95,7 +89,7 @@ const handler: Handler = async (event, context) => {
         headers,
       };
     }
-    const metaData: LinkMetaData = mapOpenGraphResultToMetaData(result);
+    const metaData: OpenGraphMetaData = mapOpenGraphResultToMetaData(result);
     return {
       statusCode: 200,
       body: JSON.stringify(metaData),
