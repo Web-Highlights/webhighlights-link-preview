@@ -1,0 +1,135 @@
+:host {
+  width: 450px;
+  height: 120px;
+  background-color: white;
+  border-width: var(--link-preview-border-width);
+  box-sizing: border-box;
+  border: 1px solid #e1e8ed;
+  overflow: hidden;
+  color: rgb(24, 25, 25);
+  cursor: pointer;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  display: flex;
+  text-decoration: none;
+  opacity: 1;
+  position: relative;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-in-out;
+}
+
+.link-preview-image {
+  display: block;
+  flex: 0 0 125px;
+  overflow: hidden;
+  height: auto;
+  position: relative;
+  transition: flex-basis 0.25s ease-in-out 0s;
+  &.loading {
+    animation: 1.25s linear 0s infinite normal none running loadingBlinking;
+    background: center center / cover no-repeat
+      var(--link-preview-loading-bg-color);
+  }
+  &:not(.loading) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@media (min-width: 991px) {
+  .link-preview-image {
+    flex: 0 0 180px;
+  }
+}
+
+.link-preview-meta-info-container {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  flex: 1 1 0%;
+  padding: 8px 8px;
+  min-width: 0px;
+  box-sizing: border-box;
+}
+
+.link-preview-meta-info-header {
+  height: 20px;
+  display: block;
+  margin: 2px 0px 8px;
+  word-break: break-all;
+  &.loading {
+    opacity: 0.8;
+    width: 60%;
+    // To make loading appear bigger
+    height: 30px;
+    animation: 0.75s linear 0s infinite normal none running loadingBlinking;
+    background: --link-preview-loading-bg-color;
+  }
+  &:not(.loading) {
+    text-align: left;
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0px;
+    -webkit-box-flex: 1.2;
+    flex-grow: 1.2;
+  }
+}
+
+.link-preview-meta-info-description {
+  display: block;
+  margin-bottom: 12px;
+  position: relative;
+  height: 20px;
+  &.loading {
+    width: 95%;
+    opacity: 0.8;
+    // To make loading appear bigger
+    height: 30px;
+    animation: 0.75s linear 0.125s infinite normal none running loadingBlinking;
+    background: --link-preview-loading-bg-color;
+  }
+  &:not(.loading) {
+    text-align: left;
+    font-size: 13px;
+    font-weight: 300;
+    -webkit-box-flex: 2;
+    flex-grow: 2;
+    margin: auto 0px;
+    line-height: 16px;
+    text-overflow: ellipsis;
+  }
+}
+
+.link-preview-meta-info-footer {
+  height: 10px;
+  display: block;
+  word-break: break-all;
+  &.loading {
+    opacity: 0.8;
+    width: 40%;
+    // To make loading appear bigger
+    height: 15px;
+    animation: 0.75s linear 0.25s infinite normal none running loadingBlinking;
+    background: --link-preview-loading-bg-color;
+  }
+  &:not(.loading) {
+    text-align: left;
+    margin: 0px;
+    -webkit-box-flex: 0;
+    flex-grow: 0;
+    font-size: 11px;
+    color: #747474;
+  }
+}
+
+@keyframes loadingBlinking {
+  0% {
+    background: rgb(225, 232, 237);
+  }
+  70% {
+    background: rgb(205, 212, 216);
+  }
+  100% {
+    background: rgb(225, 232, 237);
+  }
+}

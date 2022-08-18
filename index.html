@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <script src="main.js" type="module"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body,
+    html {
+      padding: 10px 0;
+      margin: 0;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    webhighlights-link-preview {
+      display: flex;
+      max-width: 500px;
+      margin-top: 10px;
+    }
+
+
+    @media (min-width: 600px) {
+      webhighlights-link-preview {
+        margin: 10px;
+        border-radius: 10px;
+      }
+    }
+
+    webhighlights-link-preview:hover {
+      background: rgb(245, 248, 250);
+      border-color: #8899a680;
+    }
+  </style>
+</head>
+
+<body>
+  <webhighlights-link-preview url="http://web-highlights.com/">
+  </webhighlights-link-preview>
+  <webhighlights-link-preview
+    url="https://medium.com/@mariusbongarts/my-journey-to-the-first-9-99-with-my-side-project-3edc13dd1f2d">
+  </webhighlights-link-preview>
+</body>
+
+</html>
